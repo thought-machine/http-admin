@@ -1,7 +1,7 @@
 subinclude("//build_defs:go_bindata")
 
 go_library(
-    name = "admin",
+    name = "http-admin",
     srcs = glob(["*.go"], exclude = ["bindata.go"]) + [":bindata"],
     visibility = ["PUBLIC"],
     deps = [

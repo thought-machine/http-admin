@@ -66,33 +66,34 @@ go_get(
 )
 
 go_get(
-    name = "skylark",
-    get = "github.com/google/skylark/syntax",
-    revision = "a5f7082aabed29c0e429c722292c66ec8ecf9591",
-)
-
-go_get(
-    name = "buildtools",
-    get = "github.com/bazelbuild/buildtools/...",
-    revision = "0.19.2",
-    deps = [
-        ":protobuf",
-        ":skylark",
-    ],
-)
-
-go_get(
-    name = "buildifier",
-    binary = True,
-    get = [],
-    install = ["github.com/bazelbuild/buildtools/buildifier"],
-    deps = [
-        ":buildtools",
-    ],
-)
-
-go_get(
     name = "mux",
     get = "github.com/gorilla/mux",
     revision = "v1.7.4",
+)
+
+go_get(
+    name = "cli-init",
+    get = "github.com/peterebden/go-cli-init",
+    revision = "d04cad1849c3bfe69b2d098270318d688b219f01",
+    deps = [
+        ":go-flags",
+        ":humanize",
+        ":logging",
+        ":terminal",
+    ],
+    visibility = ["//example/..."],
+)
+
+go_get(
+    name = "go-flags",
+    get = "github.com/jessevdk/go-flags",
+    revision = "v1.4.0",
+    visibility = [],
+)
+
+go_get(
+    name = "humanize",
+    get = "github.com/dustin/go-humanize",
+    revision = "v1.0.0",
+    visibility = [],
 )
