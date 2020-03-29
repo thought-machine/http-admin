@@ -89,6 +89,13 @@ var routes = []Route{
 		group:          UtilitiesGroup,
 	},
 	{
+		path:           "/admin/gc",
+		handler:        http.HandlerFunc(gcHandler),
+		alias:          "Garbage Collect",
+		includeInIndex: true,
+		group:          UtilitiesGroup,
+	},
+	{
 		path:           "/admin/logging",
 		handler:        http.HandlerFunc(LoggingHandler),
 		alias:          "Logging",
@@ -218,6 +225,13 @@ func ResourceHandler(baseRequestPath, baseResourcePath string) http.Handler {
 			writer.Write(contents)
 		}
 	})
+}
+
+func gcHandler(w http.ResponseWriter, r *http.Request) {
+	log.Infof("Forcing GC...")
+	runtime.GC()
+	log.Infof("GC completed")
+	w.Write([]byte("GC complete"))
 }
 
 // HTTPServer is a holder for the router and server involved in serving the admin UI.
