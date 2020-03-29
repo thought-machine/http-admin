@@ -194,7 +194,7 @@ var routes = []Route{
 	{
 		path:           FilesPath,
 		prefix:         true,
-		handler:        ResourceHandler(FilesPath, "admin"),
+		handler:        ResourceHandler(FilesPath, ""),
 		includeInIndex: false,
 		alias:          "Files",
 	},
@@ -216,10 +216,11 @@ func RedirectHandler(url string, code int) http.Handler {
 // ResourceHandler returns the asset, relative to the given paths.
 func ResourceHandler(baseRequestPath, baseResourcePath string) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		path := strings.TrimPrefix(request.URL.Path, baseRequestPath)
-		writeContentType(writer, detectTypeFromExtension(path))
-		contents, err := Asset(baseResourcePath + "/" + path)
-		if err != nil {
+		urlPath := strings.TrimPrefix(request.URL.Path, baseRequestPath)
+		writeContentType(writer, detectTypeFromExtension(urlPath))
+		assetPath := path.Join(baseResourcePath, urlPath)
+		if contents, err := Asset(assetPath); err != nil {
+			log.Warningf("Resource %s not found (for %s)", assetPath, request.URL.Path)
 			writer.WriteHeader(http.StatusNotFound)
 		} else {
 			writer.Write(contents)
