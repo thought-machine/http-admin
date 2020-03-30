@@ -52,9 +52,9 @@ var loggersTemplate = template.Must(template.New("loggers").Parse(`
 {{range $module, $moduleLevel := $.ModuleLevels}}
 				<tr><td>{{if (eq $module "")}}root{{else}}{{$module}}{{end}}</td>
 					<td>
-						<form action="/admin/logging" method="POST" style="display: inline"><input type="hidden" name="module" value="{{$module}}" /><input type="hidden" name="level" value="6" /><input type="submit" class="btn btn{{if (ne $moduleLevel 6)}}-outline{{end}}-secondary" value="ALL"/></form>
+						<form action="/admin/logging" method="POST" style="display: inline"><input type="hidden" name="module" value="{{$module}}" /><input type="hidden" name="level" value="DEBUG" /><input type="submit" class="btn btn{{if (ne $moduleLevel 6)}}-outline{{end}}-secondary" value="ALL"/></form>
 {{range $level := $.AllLevels}}
-						<form action="/admin/logging" method="POST" style="display: inline"><input type="hidden" name="module" value="{{$module}}" /><input type="hidden" name="level" value="{{$level  | printf "%d"}}" /><input type="submit" class="btn btn{{if (ne $moduleLevel $level)}}-outline{{end}}-{{index $.Colours $level}}" value="{{$level.String}}"/></form>
+						<form action="/admin/logging" method="POST" style="display: inline"><input type="hidden" name="module" value="{{$module}}" /><input type="hidden" name="level" value="{{ $level.String }}" /><input type="submit" class="btn btn{{if (ne $moduleLevel $level)}}-outline{{end}}-{{index $.Colours $level}}" value="{{$level.String}}"/></form>
 {{end}}
 						<form action="/admin/logging" method="POST" style="display: inline"><input type="hidden" name="module" value="{{$module}}" /><input type="hidden" name="level" value="-1" /><input type="submit" class="btn btn{{if (ne $moduleLevel -1)}}-outline{{end}}-dark" value="OFF"/></form>
 					</td>
@@ -105,9 +105,9 @@ func UpdateLoggingHandler(writer http.ResponseWriter, request *http.Request) {
 	request.ParseForm()
 	module := request.Form.Get("module")
 	if level, err := logging.LogLevel(request.Form.Get("level")); err != nil {
-		log.Warningf("unable to parse level - %s - ignoring", err)
+		log.Warningf("unable to parse level %s - %s - ignoring", request.Form.Get("level"), err)
 	} else {
-		log.Debugf("Setting level for %s to %d", module, level)
+		log.Debugf("Setting level for %s to %s", module, level)
 		loggerInfo.SetLevel(level, module)
 	}
 	http.Redirect(writer, request, "/admin/logging", http.StatusSeeOther)
