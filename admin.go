@@ -54,6 +54,7 @@ type Route struct {
 // Opts is all flags associated with the admin HTTP server.
 type Opts struct {
 	Disabled bool       `long:"disabled" description:"If true, the admin server will never start." env:"ADMIN_DISABLE_HTTP"`
+	Host     string     `long:"host" description:"The host to listen on."`
 	Port     int        `long:"port" default:"9990" description:"The port to listen on."`
 	Logger   Logger     `no-flag:"true"`
 	LogInfo  LoggerInfo `no-flag:"true"`
@@ -372,8 +373,8 @@ func (a *HTTPServer) startServer(opts Opts) {
 		return
 	}
 
-	log.Infof("Serving admin http on :%d", opts.Port)
-	log.Errorf("Failed to serve admin HTTP: %s", http.ListenAndServe(fmt.Sprintf(":%d", opts.Port), a.adminHTTPMuxer))
+	log.Infof("Serving admin http on %s:%d", opts.Host, opts.Port)
+	log.Errorf("Failed to serve admin HTTP: %s", http.ListenAndServe(fmt.Sprintf("%s:%d", opts.Host, opts.Port), a.adminHTTPMuxer))
 }
 
 func getFunctionName(i interface{}) string {
