@@ -238,8 +238,8 @@ func gcHandler(w http.ResponseWriter, r *http.Request) {
 
 // HTTPServer is a holder for the router and server involved in serving the admin UI.
 type HTTPServer struct {
-	adminHTTPMuxer  *mux.Router
-	allRoutes []Route
+	adminHTTPMuxer *mux.Router
+	allRoutes      []Route
 }
 
 func (a *HTTPServer) addAdminRoutes(newRoutes ...Route) {
@@ -250,31 +250,6 @@ func (a *HTTPServer) addAdminRoutes(newRoutes ...Route) {
 		}
 		a.allRoutes = append(a.allRoutes, r)
 	}
-
-	// Some libraries like to register into DefaultServeMux, we serve all of them from the admin endpoint, so check if we missed any.
-	r := mux.NewRouter()
-	r.PathPrefix("/").Handler(http.DefaultServeMux)
-	_ = r.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
-		if s, ok := route.GetHandler().(*http.ServeMux); ok {
-			muxEntries := reflect.ValueOf(s).Elem().FieldByName("m")
-			for _, path := range muxEntries.MapKeys() {
-				p := path.String()
-
-				var found bool
-				for _, r := range a.allRoutes {
-					if p == r.path {
-						found = true
-					}
-				}
-				if !found {
-					log.Warningf("Found entry %s in DefaultServeMux that isn't handled in AdminHTTPServer!", p)
-				}
-			}
-		}
-
-		return nil
-	})
-
 	a.updateMuxer()
 }
 
