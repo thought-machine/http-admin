@@ -1,14 +1,27 @@
 module github.com/thought-machine/http-admin
 
-go 1.16
+go 1.26.0
 
 require (
-	github.com/gorilla/mux v1.7.4
-	github.com/peterebden/go-cli-init v1.3.1-0.20200329085717-d04cad1849c3 // indirect
-	github.com/prometheus/client_golang v1.5.1
-	github.com/prometheus/client_model v0.2.0
-	golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59 // indirect
-	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e
-	golang.org/x/sys v0.0.0-20200327173247-9dae0f8f5775 // indirect
+	github.com/gorilla/mux v1.8.1
+	github.com/peterebden/go-cli-init v1.3.1
+	github.com/prometheus/client_golang v1.25.0
+	github.com/prometheus/client_model v0.6.3
+	golang.org/x/net v0.63.0
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473
+)
+
+require (
+	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/dustin/go-humanize v1.1.0 // indirect
+	github.com/jessevdk/go-flags v1.6.1 // indirect
+	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
+	github.com/pandatix/go-abnf v0.5.5 // indirect
+	github.com/prometheus/common v0.74.0 // indirect
+	github.com/prometheus/procfs v0.23.0 // indirect
+	golang.org/x/crypto v0.59.0 // indirect
+	golang.org/x/sys v0.50.0 // indirect
+	golang.org/x/term v0.48.0 // indirect
+	google.golang.org/protobuf v1.36.12 // indirect
 )
