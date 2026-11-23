@@ -2,8 +2,10 @@
 package admin
 
 import (
+	"embed"
 	"expvar"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"net/http/pprof"
 	"os"
@@ -20,6 +22,11 @@ import (
 	"golang.org/x/net/trace"
 	"gopkg.in/op/go-logging.v1"
 )
+
+// resources holds the static files served by the admin UI.
+//
+//go:embed css img js
+var resources embed.FS
 
 var log Logger = logging.MustGetLogger("admin")
 
@@ -220,7 +227,7 @@ func ResourceHandler(baseRequestPath, baseResourcePath string) http.Handler {
 		urlPath := strings.TrimPrefix(request.URL.Path, baseRequestPath)
 		writeContentType(writer, detectTypeFromExtension(urlPath))
 		assetPath := path.Join(baseResourcePath, urlPath)
-		if contents, err := Asset(assetPath); err != nil {
+		if contents, err := fs.ReadFile(resources, assetPath); err != nil {
 			log.Warningf("Resource %s not found (for %s)", assetPath, request.URL.Path)
 			writer.WriteHeader(http.StatusNotFound)
 		} else {
