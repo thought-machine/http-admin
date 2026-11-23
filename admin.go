@@ -21,6 +21,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/net/trace"
 	"gopkg.in/op/go-logging.v1"
+	"github.com/felixge/fgprof"
 )
 
 // resources holds the static files served by the admin UI.
@@ -141,6 +142,13 @@ var routes = []Route{
 		path:           "/debug/pprof/profile",
 		handler:        http.HandlerFunc(pprof.Profile),
 		alias:          "Profile",
+		includeInIndex: true,
+		group:          PerfProfileGroup,
+	},
+	{
+		path:           "/debug/pprof/fgprof",
+		handler:        fgprof.Handler(),
+		alias:          "CPU+IO Profile",
 		includeInIndex: true,
 		group:          PerfProfileGroup,
 	},

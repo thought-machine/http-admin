@@ -3,6 +3,7 @@ module github.com/thought-machine/http-admin
 go 1.26.0
 
 require (
+	github.com/felixge/fgprof v0.9.5
 	github.com/gorilla/mux v1.8.1
 	github.com/peterebden/go-cli-init v1.3.1
 	github.com/prometheus/client_golang v1.25.0
@@ -15,6 +16,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dustin/go-humanize v1.1.0 // indirect
+	github.com/google/pprof v0.0.0-20240227163752-401108e1b7e7 // indirect
 	github.com/jessevdk/go-flags v1.6.1 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/pandatix/go-abnf v0.5.5 // indirect
